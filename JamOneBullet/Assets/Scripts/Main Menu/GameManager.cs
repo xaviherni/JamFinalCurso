@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject OptionPanel;
+   
+    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] private int score;
 
-    public void ActivateOptionPanel()
+
+    private void OnEnable()
     {
-        OptionPanel.SetActive(true);
+        Bullet.OnScore += ScoreCounter;
     }
-    public void DeactivateOptionPanel()
+    private void OnDisable()
     {
-        OptionPanel.SetActive(false);
+        Bullet.OnScore -= ScoreCounter;
     }
+    private void ScoreCounter()
+    {
+        score++;
+        scoreText.text = score.ToString();
+    }
+
 
 }//Class
