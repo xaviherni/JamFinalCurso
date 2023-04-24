@@ -7,22 +7,18 @@ public class Shoot : MonoBehaviour
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform shootPoint;
     [SerializeField] private int bulletsAvailable = 1;
-    public float timeReloadRestart;
-    public float timeToReload = 2.5f;
+    [SerializeField] private bool isLoading = false;
 
-    private void Start()
-    {
-        timeReloadRestart = timeToReload;
-    }
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && bulletsAvailable > 0)
         {
             Shooting();
         }
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !isLoading && bulletsAvailable == 0)
         {
-            LoadAmmo();
+            isLoading = true;
+            StartCoroutine(LoadingBullet());
         }
     }
     private void Shooting()
@@ -31,13 +27,10 @@ public class Shoot : MonoBehaviour
         bulletsAvailable--;
     }
 
-    private void LoadAmmo()
+    private IEnumerator LoadingBullet()
     {
-
-        if (timeToReload <= 0 && bulletsAvailable == 0)
-        {
-            bulletsAvailable++;
-        }
+        yield return new WaitForSeconds(2.5f);
+        bulletsAvailable++;
+        isLoading = false;
     }
-
 }//Class
